@@ -1,4 +1,4 @@
-from typing import Dict, Union
+from TreeBuilder import build_tree
 
 
 class GenerateDataset:
@@ -12,7 +12,7 @@ class GenerateDataset:
             generate a word that {ends/starts} with {letter / letters}
 
         * Sentence:
-****            Initial words consist a sentene cr word
+            Initial words consist a sentene cr word
             generate a sentence that has {> n words / < n words / n words}
             generate a sentence that has {> n characters / < n characters / n characters}
             generate a sentence that is a palindrome (read the same forward and backward)
@@ -42,32 +42,23 @@ class GenerateDataset:
 
     """
 
-    def __init__(self, constraints: Dict[str, Union[bool, int]], dataset_size: int, dataset_type: str):
-        self.constraints = constraints
-        self.dataset_size = dataset_size
-        self.dataset = []
-
     def generate_dataset(self):
-        word_constraints = self.constraints['word_constraints']
-        sentence_constraints = self.constraints['sentence_constraints']
-        paragraph_constraints = self.constraints['paragraph_constraints']
+        for i in range(10):
+            print(f"------{i}-------")
+            root_node = build_tree()
+            root_node.print_tree()
+            print("---------PROMPT---------")
+            print("generate a paragraph" + root_node.format_response())
 
-        for idx in range(self.dataset_size):
-            generated_constraints = ""
-            if word_constraints:
-                word_constraint = self.generate_word_constraints(word_constraints)
-            if sentence_constraints:
-                sentence_constraint = self.generate_sentence_constraints(sentence_constraints)
-            if paragraph_constraints:
-                paragraph_constraints = self.generate_paragraph_constraints(paragraph_constraints)
+    def generate_word_constraints(self, word_constraints_num: int) -> list[str]:
+        return []
 
-            self.dataset.append(generated_constraints)
+    def generate_sentence_constraints(self, sentence_constraints_num) -> list[str]:
+        return []
 
-    def generate_word_constraints(self, word_constraints):
-        return ""
+    def generate_paragraph_constraints(self, paragraph_constraints_num) -> list[str]:
+        return []
 
-    def generate_sentence_constraints(self, sentence_constraints):
-        return ""
 
-    def generate_paragraph_constraints(self, paragraph_constraints):
-        return ""
+generator = GenerateDataset()
+generator.generate_dataset()
