@@ -5,7 +5,7 @@ from typing import Tuple, List
 from random_constraints import *
 
 
-class ConstraintType(Enum):
+class ConstraintQunatity(Enum):
     MORE_THAN = 'EDGE: more than'
     LESS_THAN = 'EDGE: less than'
     EXACTLy = 'EDGE: exactly'
@@ -30,7 +30,7 @@ class Node:
         self.level = level  # The level of the constraint (content, paragraph, etc.)
         self.aggregation = aggregation  # The aggregation format of the sub-nodes
         self.children: List[Node] = []  # List of child nodes.
-        self.edge_values: List[Tuple[ConstraintType, int]] = []  # Edge values to child nodes.
+        self.edge_values: List[Tuple[ConstraintQunatity, int]] = []  # Edge values to child nodes.
 
     # Method to add a child node.
     def add_child(self, child):
@@ -52,11 +52,8 @@ class Node:
             accum_constraint += child.format_response(depth + 1)
         return accum_constraint
 
-
-
-
 def generate_random_content(level: NodeType) -> str:
-    constraint = ""
+    constraint = ("",)
     if level == NodeType.PARAGRAPH:
         constraint = generate_paragraph_constraint()
     elif level == NodeType.SENTENCE:
