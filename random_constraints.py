@@ -14,6 +14,7 @@ class Constraint:
 
 
 def generate_word_constraint():
+    """ generate word constraint prompts"""
     pos = random.choice(['noun', 'verb', 'adjective'])
     choices = [
         lambda: Constraint("", constraint_empty),
