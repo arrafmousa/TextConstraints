@@ -46,19 +46,7 @@ class GenerateDataset:
         for i in range(10):
             print(f"------{i}-------")
             root_node = build_tree()
-            root_node.print_tree()
-            print("---------PROMPT---------")
             print("generate a paragraph" + root_node.format_response())
-
-    def generate_word_constraints(self, word_constraints_num: int) -> list[str]:
-        return []
-
-    def generate_sentence_constraints(self, sentence_constraints_num) -> list[str]:
-        return []
-
-    def generate_paragraph_constraints(self, paragraph_constraints_num) -> list[str]:
-        return []
-
 
 generator = GenerateDataset()
 generator.generate_dataset()

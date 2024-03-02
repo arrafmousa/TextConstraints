@@ -39,6 +39,13 @@ def split_sentences(text: str) -> list[str]:
     """
     return sent_tokenize(text)
 
+def split_words(text: str) -> list[str]:
+    """
+    Split the text into words based on whitespace
+    :param text: string
+    :return: a list of words
+    """
+    return word_tokenize(text)
 
 def tag_parts_of_speech(text: str, required: str, comparator: str) -> bool:
     """
@@ -59,14 +66,23 @@ def tag_parts_of_speech(text: str, required: str, comparator: str) -> bool:
     return False
 
 
-def count_letters(text: str, required: int) -> bool:
+def count_letters(text: str, required: int, comparator: str) -> bool:
     """
     Count the number of letters in the text and compare it to the required number
+    :param comparator: one of the following ['exactly', 'more', 'less'] each representing the number of letters required
     :param text: string
     :param required: number of letters required
     :return: True if the number of letters in the text matches the required number
     """
-    return required == sum(1 for char in text if char.isalpha())
+    letters_count = sum(1 for char in text if char.isalpha())
+    if 'more' in comparator:
+        return letters_count > required
+    if 'less' in comparator:
+        return letters_count < required
+    if 'exactly' in comparator:
+        return letters_count == required
+    return False
+
 
 
 def is_anagram(text: str, reference: str) -> bool:
