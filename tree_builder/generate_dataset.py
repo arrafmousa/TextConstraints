@@ -1,5 +1,7 @@
 from TreeBuilder import build_tree
 
+from tree_builder.Tree import Tree
+
 
 class GenerateDataset:
     """
@@ -45,8 +47,10 @@ class GenerateDataset:
     def generate_dataset(self):
         for i in range(10):
             print(f"------{i}-------")
-            root_node = build_tree()
+            tree = Tree()
+
             print("generate a paragraph" + root_node.format_response())
+
 
 generator = GenerateDataset()
 generator.generate_dataset()

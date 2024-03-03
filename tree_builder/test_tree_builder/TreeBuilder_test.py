@@ -7,7 +7,7 @@ if __name__ == '__main__':
             " Bees buzzed gently from bloom to bloom, contributing to the serene atmosphere."
             " The air was filled with the sweet fragrance of roses and jasmine, creating"
             " a sense of tranquility and peace. "
-            ""
+            "\n"
             "In the city, the streets were alive with the sound of bustling people and cars honking."
             " The tall buildings stretched towards the sky, windows reflecting the bright sunlight."
             " Amidst the chaos, a small café offered a quiet escape, where the aroma of fresh coffee"
@@ -15,7 +15,12 @@ if __name__ == '__main__':
 
     for i in range(10):
         tree = Tree()
-        print(tree.format_response())
-        print("--------------------")
+        if tree.validate_content(text):
+            print("Correct")
+            print("--------------------")
+        else:
+            print("Incorrect")
+            print(tree.format_response())
+            print("--------------------")
 
     unittest.main()

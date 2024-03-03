@@ -1,25 +1,29 @@
 import nltk
 from nltk.tokenize import sent_tokenize, word_tokenize
+from collections import defaultdict
 
 #  Part of speech translation
-pos_translation = {
-    # Nouns
-    'NN': 'noun',
-    'NNS': 'noun',
-    'NNP': 'noun',
-    'NNPS': 'noun',
-    # Verbs
-    'VB': 'verb',
-    'VBD': 'verb',
-    'VBG': 'verb',
-    'VBN': 'verb',
-    'VBP': 'verb',
-    'VBZ': 'verb',
-    # Adjectives
-    'JJ': 'adjective',
-    'JJR': 'adjective',
-    'JJS': 'adjective',
-}
+
+
+pos_translation = defaultdict(lambda: 'NONE',
+                              {
+                                  # Nouns
+                                  'NN': 'noun',
+                                  'NNS': 'noun',
+                                  'NNP': 'noun',
+                                  'NNPS': 'noun',
+                                  # Verbs
+                                  'VB': 'verb',
+                                  'VBD': 'verb',
+                                  'VBG': 'verb',
+                                  'VBN': 'verb',
+                                  'VBP': 'verb',
+                                  'VBZ': 'verb',
+                                  # Adjectives
+                                  'JJ': 'adjective',
+                                  'JJR': 'adjective',
+                                  'JJS': 'adjective',
+                              })
 
 
 def split_paragraphs(text: str) -> list[str]:
@@ -39,6 +43,7 @@ def split_sentences(text: str) -> list[str]:
     """
     return sent_tokenize(text)
 
+
 def split_words(text: str) -> list[str]:
     """
     Split the text into words based on whitespace
@@ -47,7 +52,8 @@ def split_words(text: str) -> list[str]:
     """
     return word_tokenize(text)
 
-def tag_parts_of_speech(text: str, required: str, comparator: str) -> bool:
+
+def tag_parts_of_speech(text: str, required: str) -> bool:
     """
     Tag the parts of speech in the text and compare them to the required part of speech
     :param text: string
@@ -57,13 +63,7 @@ def tag_parts_of_speech(text: str, required: str, comparator: str) -> bool:
     """
     tokens = word_tokenize(text)
     tagged_tokens = nltk.pos_tag(tokens)
-    if 'exactly' in comparator:
-        return required == pos_translation[tagged_tokens[0][1]]
-    if 'more' in comparator:
-        return required > pos_translation[tagged_tokens[0][1]]
-    if 'less' in comparator:
-        return required < pos_translation[tagged_tokens[0][1]]
-    return False
+    return required == pos_translation[tagged_tokens[0][1]]
 
 
 def count_letters(text: str, required: int, comparator: str) -> bool:
@@ -82,7 +82,6 @@ def count_letters(text: str, required: int, comparator: str) -> bool:
     if 'exactly' in comparator:
         return letters_count == required
     return False
-
 
 
 def is_anagram(text: str, reference: str) -> bool:
