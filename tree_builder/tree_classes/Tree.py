@@ -34,7 +34,7 @@ class Tree:
         The structure is kept the same as content then paragraph then sentence then word.
         """
         level = random.choice(list(NodeType))
-        root = Node(generate_random_content(NodeType.CONTENT, dummy=True), level, random.choice(list(AggregationType)), 0)
+        root = Node(generate_random_content(NodeType.CONTENT, dummy=True), level, AggregationType.COUNT, 1)
         if level == NodeType.PARAGRAPH:  # generate a constraint node and exit
             paragraph_node = Node(generate_random_content(NodeType.PARAGRAPH), NodeType.PARAGRAPH,
                                   AggregationType.NONE, 0)

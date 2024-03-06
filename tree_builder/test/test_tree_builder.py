@@ -15,13 +15,12 @@ if __name__ == '__main__':
 
     for i in range(10):
         tree = Tree(simple=True)
+        print("generate a text that has a ", tree.format_response())
         if tree.validate_content(text):
             print("Correct")
-            print(tree.format_response())
             print("--------------------")
         else:
             print("Incorrect")
-            print(tree.format_response())
             print("--------------------")
 
     unittest.main()

@@ -26,25 +26,12 @@ class Node:
         for child in self.children:
             child.print_tree(depth + 1)
 
-    def format_response(self, depth=1) -> str:
+    def format_response(self, write_class=True) -> str:
         accum_constraint = ''
         if self.constraint.dummy:
-            accum_constraint += f"{self.children[0].format_response()}"
+            accum_constraint += f"{self.children[0].format_response(write_class)}"
         else:
-            accum_constraint += self.constraint.instruction
-        return accum_constraint
-
-
-        # accum_constraint = self.constraint.instruction if self.constraint.instruction else ''
-        # if len(self.children) == 0:
-        #     return accum_constraint
-        # if not self.constraint.dummy:
-        #     accum_constraint += (". And in it " +
-        #                          f"{self.aggregation.value} "
-        #                          f"{self.aggregation_value if self.aggregation != AggregationType.NONE else ''}"
-        #                          + " of the following is true:")
-        # for child in self.children:
-        #     accum_constraint += "\n" + "\t" * depth + f"{child.level.value} {child.format_response(depth + 1)}"
+            accum_constraint += f"{self.level if write_class else ''} {self.constraint.instruction}"
         return accum_constraint
 
     def split_text(self, text: str) -> List[str]:
@@ -62,9 +49,7 @@ class Node:
         :param content:
         :return:
         """
-        if self.constraint.dummy:
-            return True
-        if not self.constraint.validator_f(content):
+        if not self.constraint.dummy and  not self.constraint.validator_f(content):
             return False
         texts = self.split_text(content)
         comply = [1 if child.validate_content(text) else 0 for text, child in zip(texts, self.children)]
