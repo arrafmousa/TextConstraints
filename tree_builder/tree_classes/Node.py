@@ -1,7 +1,9 @@
 from typing import List
 
-from tree_builder.random_constraints import *
-from tree_builder.enums import NodeType, AggregationType
+from tree_builder.builder.random_constraints import *
+from tree_builder.tree_classes.Constraint import Constraint
+from tree_builder.tree_classes.enums import NodeType, AggregationType
+from validator.constraint_codes import split_paragraphs, split_sentences, split_words
 
 
 class Node:
@@ -25,15 +27,24 @@ class Node:
             child.print_tree(depth + 1)
 
     def format_response(self, depth=1) -> str:
-        accum_constraint = self.constraint.instruction
-        if len(self.children) == 0:
-            return accum_constraint
-        accum_constraint += (". And in it " +
-                             f"{self.aggregation.value} "
-                             f"{self.aggregation_value if self.aggregation != AggregationType.NONE else ''}"
-                             + " of the following is true:")
-        for child in self.children:
-            accum_constraint += "\n" + "\t" * depth + f"{child.level.value} {child.format_response(depth + 1)}"
+        accum_constraint = ''
+        if self.constraint.dummy:
+            accum_constraint += f"{self.children[0].format_response()}"
+        else:
+            accum_constraint += self.constraint.instruction
+        return accum_constraint
+
+
+        # accum_constraint = self.constraint.instruction if self.constraint.instruction else ''
+        # if len(self.children) == 0:
+        #     return accum_constraint
+        # if not self.constraint.dummy:
+        #     accum_constraint += (". And in it " +
+        #                          f"{self.aggregation.value} "
+        #                          f"{self.aggregation_value if self.aggregation != AggregationType.NONE else ''}"
+        #                          + " of the following is true:")
+        # for child in self.children:
+        #     accum_constraint += "\n" + "\t" * depth + f"{child.level.value} {child.format_response(depth + 1)}"
         return accum_constraint
 
     def split_text(self, text: str) -> List[str]:
@@ -51,6 +62,8 @@ class Node:
         :param content:
         :return:
         """
+        if self.constraint.dummy:
+            return True
         if not self.constraint.validator_f(content):
             return False
         texts = self.split_text(content)
@@ -67,7 +80,9 @@ class Node:
         raise ValueError("Invalid aggregation type")
 
 
-def generate_random_content(level: NodeType) -> Constraint:
+def generate_random_content(level: NodeType, dummy: bool = False) -> Constraint:
+    if dummy:
+        return Constraint(dummy=dummy)
     if level == NodeType.PARAGRAPH:
         constraint = generate_paragraph_constraint()
     elif level == NodeType.SENTENCE:

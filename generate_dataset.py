@@ -1,6 +1,4 @@
-from TreeBuilder import build_tree
-
-from tree_builder.Tree import Tree
+from tree_builder.tree_classes.Tree import Tree
 
 
 class GenerateDataset:
@@ -48,7 +46,6 @@ class GenerateDataset:
         for i in range(10):
             print(f"------{i}-------")
             tree = Tree()
-
             print("generate a paragraph" + root_node.format_response())
 
 

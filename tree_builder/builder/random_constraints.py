@@ -1,19 +1,9 @@
 import random
 from functools import partial
 
-from tree_builder.enums import ConstraintType
+from tree_builder.tree_classes.Constraint import Constraint
+from tree_builder.tree_classes.enums import ConstraintType
 from validator.constraint_codes import *
-
-
-class Constraint:
-    instruction: str
-    validator_f: callable
-
-    def __init__(self, constraint: str, validator_f: callable, constraint_type: ConstraintType):
-        self.instruction = constraint
-        self.validator_f = validator_f
-        self.constraint_type = constraint_type
-
 
 def generate_word_constraint() -> Constraint:
     """ generate word constraint prompts"""

@@ -1,11 +1,22 @@
 from enum import Enum
 
 class NodeType(Enum):
-    CONTENT = 'content'
-    PARAGRAPH = 'paragraph'
-    SENTENCE = 'sentence'
-    WORD = 'word'
+    CONTENT = 1, 'content'
+    PARAGRAPH = 2, 'paragraph'
+    SENTENCE = 3, 'sentence'
+    WORD = 4, 'word'
 
+    def __new__(cls, value, name):
+        obj = object.__new__(cls)
+        obj._value_ = value
+        obj.shortname = name
+        return obj
+
+    def __int__(self):
+        return self.value
+
+    def __str__(self):
+        return self.shortname
 
 class AggregationType(Enum):
     MORE_THAN = "at least "

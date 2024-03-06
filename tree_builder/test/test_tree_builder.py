@@ -1,6 +1,6 @@
 import unittest
 
-from tree_builder.Tree import Tree
+from tree_builder.tree_classes.Tree import Tree
 
 if __name__ == '__main__':
     text = ("The garden was a blend of colors, with flowers ranging from deep violet to bright yellow."
@@ -14,9 +14,10 @@ if __name__ == '__main__':
             " and the sound of soft music provided a comforting respite.")
 
     for i in range(10):
-        tree = Tree()
+        tree = Tree(simple=True)
         if tree.validate_content(text):
             print("Correct")
+            print(tree.format_response())
             print("--------------------")
         else:
             print("Incorrect")

@@ -3,6 +3,7 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from collections import defaultdict
 
 #  Part of speech translation
+# nltk.download('punkt')
 
 
 pos_translation = defaultdict(lambda: 'NONE',

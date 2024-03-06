@@ -1,7 +1,7 @@
 import random
 
-from tree_builder.Node import Node, generate_random_content
-from tree_builder.enums import AggregationType, NodeType
+from tree_builder.tree_classes.Node import Node, generate_random_content
+from tree_builder.tree_classes.enums import AggregationType, NodeType
 
 
 def select_aggregation_type(aggregation_value):
@@ -15,13 +15,46 @@ def select_aggregation_type(aggregation_value):
 
 class Tree:
     root: Node = None
+    simple: bool = False
 
-    def __init__(self):
+    def __init__(self, simple: bool = False):
         """
         Initializes the tree with a root node.
         """
-        self.root = self.build_tree()
-        self.remove_duplicate_constraints(self.root)
+        self.simple = simple
+        if simple:
+            self.root = self.build_simple_tree()
+        else:
+            self.root = self.build_tree()
+            self.remove_duplicate_constraints(self.root)
+
+    def build_simple_tree(self) -> Node:
+        """
+        Builds a simple tree with a single constraint chosen randomly from different levels.
+        The structure is kept the same as content then paragraph then sentence then word.
+        """
+        level = random.choice(list(NodeType))
+        root = Node(generate_random_content(NodeType.CONTENT, dummy=True), level, random.choice(list(AggregationType)), 0)
+        if level == NodeType.PARAGRAPH:  # generate a constraint node and exit
+            paragraph_node = Node(generate_random_content(NodeType.PARAGRAPH), NodeType.PARAGRAPH,
+                                  AggregationType.NONE, 0)
+            root.add_child(paragraph_node)
+        else:  # generate dummy paragraph constraint node
+            paragraph_node = Node(generate_random_content(NodeType.PARAGRAPH, dummy=True), NodeType.PARAGRAPH,
+                                  AggregationType.COUNT, 1)
+            root.add_child(paragraph_node)
+            if level == NodeType.SENTENCE:  # generate a constraint node and exit
+                sentence_node = Node(generate_random_content(NodeType.SENTENCE), NodeType.SENTENCE,
+                                     AggregationType.NONE, 0)
+                paragraph_node.add_child(sentence_node)
+            else:  # have to be a word constraint node
+                sentence_node = Node(generate_random_content(NodeType.SENTENCE, dummy=True), NodeType.SENTENCE,
+                                     AggregationType.COUNT, 1)
+                paragraph_node.add_child(sentence_node)
+                word_node = Node(generate_random_content(NodeType.WORD), NodeType.WORD, AggregationType.NONE, 0)
+                sentence_node.add_child(word_node)
+        self.root = root
+        return root
 
     def build_tree(self) -> Node:
         """
