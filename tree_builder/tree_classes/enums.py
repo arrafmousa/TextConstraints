@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class NodeType(Enum):
     CONTENT = 1, 'content'
     PARAGRAPH = 2, 'paragraph'
@@ -18,11 +19,18 @@ class NodeType(Enum):
     def __str__(self):
         return self.shortname
 
+
 class AggregationType(Enum):
     MORE_THAN = "at least "
     LESS_THAN = "less than "
     COUNT = "exactly "
     NONE = "none"
+
+
+class AggregationTypeExpanded(Enum):
+    ALL = "all "
+    ANY = "any "
+
 
 class ConstraintType(Enum):
     TAG_PARTS_OF_SPEECH = "tag_parts_of_speech"

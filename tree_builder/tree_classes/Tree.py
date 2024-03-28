@@ -10,6 +10,8 @@ def select_aggregation_type(aggregation_value):
         aggregation_types.remove(AggregationType.MORE_THAN)
     elif aggregation_value == 0:
         aggregation_types.remove(AggregationType.LESS_THAN)
+        aggregation_types.remove(AggregationType.MORE_THAN)
+        aggregation_types.remove(AggregationType.COUNT)
     return random.choice(aggregation_types)
 
 
@@ -26,7 +28,7 @@ class Tree:
             self.root = self.build_simple_tree()
         else:
             self.root = self.build_tree()
-            self.remove_duplicate_constraints(self.root)
+            # self.remove_duplicate_constraints(self.root)
 
     def build_simple_tree(self) -> Node:
         """
@@ -64,14 +66,14 @@ class Tree:
         each Node has a constraint, a level, and an aggregation type.
         :return:
         """
-        root_children = random.randint(1, 3)
-        root_aggregation_value = random.randint(0, root_children)
+        root_children_num = random.randint(1, 3)
+        root_aggregation_value = random.randint(0, root_children_num)
         root_aggregation = select_aggregation_type(root_aggregation_value)
         root = Node(generate_random_content(NodeType.CONTENT), NodeType.CONTENT, root_aggregation,
                     root_aggregation_value)
-        for _ in range(root_children):  # Number of children of root.
+        for _ in range(root_children_num):  # Number of children of root.
             paragraph_children = random.randint(0, 3)
-            paragraph_aggregation_value = random.randint(0, paragraph_children)
+            paragraph_aggregation_value = random.randint(0, max(0, paragraph_children - 1))
             paragraph_aggregation = select_aggregation_type(paragraph_aggregation_value)
             paragraph_node = Node(generate_random_content(NodeType.PARAGRAPH), NodeType.PARAGRAPH,
                                   paragraph_aggregation, paragraph_aggregation_value)
@@ -119,8 +121,13 @@ class Tree:
         """
         return self.root.validate_content(content)
 
-    def print_tree(self):
-        self.root.print_tree()
+    def validate_content_and_return_false_constraints(self, content: str) -> dict:
+        """
+        Validates the content against the constraints of the tree and returns a dictionary of each constraint that has
+        yielded false.
+        """
+        return self.root.validate_content_and_return_false_constraints(content)
 
-    def format_response(self) -> str:
-        return self.root.format_response()
+    def print_tree(self):
+        print(self.root.constraint.instruction)
+        self.root.print_tree()
